@@ -11,6 +11,10 @@ Run:
 cordova plugin add cordova-plugin-firebase-mlvision --save
 ```
 
+dependency id="cordova-plugin-androidx" version="^2.0.0"
+dependency id="cordova-plugin-androidx-adapter" version="^1.1.1"
+
+
 # Usage
 ## Text recognition
 
