@@ -16,46 +16,6 @@ import java.util.Locale;
 
 
 public class FirebaseUtils {
-    public static JSONObject parseText(InputImage image, Text text) throws Exception {
-        JSONArray blocks = new JSONArray();
-        for (Text.TextBlock textBlock : text.getTextBlocks()) {
-            JSONArray lines = new JSONArray();
-            for (Text.Line line : textBlock.getLines()) {
-                JSONArray elements = new JSONArray();
-                for (Text.Element element : line.getElements()) {
-                    JSONObject elementObject = new JSONObject();
-                    elementObject.put("cornerPoints", parsePoints(element.getCornerPoints()));
-                    elementObject.put("text", element.getText());
-                    elementObject.put("frame", parseBoundingBox(element.getBoundingBox()));
-                    elementObject.put("recognizedLanguages", element.getRecognizedLanguage());
-                    elements.put(elementObject);
-                }
-                JSONObject lineObject = new JSONObject();
-                lineObject.put("cornerPoints", parsePoints(line.getCornerPoints()));
-                lineObject.put("text", line.getText());
-                lineObject.put("frame", parseBoundingBox(line.getBoundingBox()));
-                lineObject.put("recognizedLanguages", line.getRecognizedLanguage());
-                lineObject.put("elements", elements);
-                lines.put(lineObject);
-            }
-            JSONObject block = new JSONObject();
-            block.put("cornerPoints", parsePoints(textBlock.getCornerPoints()));
-            block.put("text", textBlock.getText());
-            block.put("frame", parseBoundingBox(textBlock.getBoundingBox()));
-            block.put("recognizedLanguages", textBlock.getRecognizedLanguage());
-            block.put("lines", lines);
-            blocks.put(block);
-        }
-
-        JSONObject result = new JSONObject();
-        result.put("text", text.getText());
-        result.put("blocks", blocks);
-        result.put("imageWidth", image.getWidth());
-        result.put("imageHeight", image.getHeight());
-
-        return result;
-    }
-
     public static JSONArray parseBarcodes(InputImage image, List<Barcode> barcodes) throws Exception {
         JSONArray array = new JSONArray();
         for (Barcode barcode : barcodes) {
@@ -160,20 +120,6 @@ public class FirebaseUtils {
             }
 
             array.put(barcodeMap);
-        }
-        return array;
-    }
-
-    public static JSONArray parseImageLabels(List<ImageLabel> imageLabels) throws Exception {
-        JSONArray array = new JSONArray();
-        for (ImageLabel imageLabel : imageLabels) {
-
-            JSONObject imageLabelMap = new JSONObject();
-            imageLabelMap.put("text", imageLabel.getText());
-            imageLabelMap.put("confidence", imageLabel.getConfidence());
-            imageLabelMap.put("index", imageLabel.getIndex());
-
-            array.put(imageLabelMap);
         }
         return array;
     }
