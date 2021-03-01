@@ -1,7 +1,4 @@
-import MLKitTextRecognition
 import MLKitBarcodeScanning
-import MLKitImageLabeling
-import MLKitVision
 import UIKit
 
 @objc(FirebaseVisionPlugin)

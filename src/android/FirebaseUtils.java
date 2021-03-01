@@ -6,8 +6,7 @@ import android.text.TextUtils;
 
 import com.google.mlkit.vision.barcode.Barcode;
 import com.google.mlkit.vision.common.InputImage;
-import com.google.mlkit.vision.label.ImageLabel;
-import com.google.mlkit.vision.text.Text;
+
 
 import org.json.JSONArray;
 import org.json.JSONObject;

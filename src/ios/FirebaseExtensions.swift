@@ -1,6 +1,4 @@
-import MLKitTextRecognition
 import MLKitBarcodeScanning
-import MLKitImageLabeling
 import UIKit
 
 extension Text {
