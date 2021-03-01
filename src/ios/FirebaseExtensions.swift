@@ -1,42 +1,6 @@
 import MLKitBarcodeScanning
 import UIKit
 
-extension Text {
-    func toJSON(with image: UIImage) -> [AnyHashable: Any] {
-        let blocksParsed = blocks.compactMap { (block) -> Any? in
-            let lines = block.lines.compactMap { (line) -> Any? in
-                let elements = line.elements.compactMap { (element) -> Any? in
-                    return [
-                        "cornerPoints": element.cornerPoints.toJSON() as Any,
-                        "text": element.text,
-                        "frame": element.frame.toJSON() as Any
-                    ]
-                }
-                return [
-                    "cornerPoints": line.cornerPoints.toJSON() as Any,
-                    "text": line.text,
-                    "frame": line.frame.toJSON() as Any,
-                    "recognizedLanguages": line.recognizedLanguages.compactMap({$0.languageCode}),
-                    "elements": elements
-                ]
-            }
-            return [
-                "cornerPoints": block.cornerPoints.toJSON() as Any,
-                "text": block.text,
-                "frame": block.frame.toJSON() as Any,
-                "recognizedLanguages": block.recognizedLanguages.compactMap({$0.languageCode}),
-                "lines": lines
-            ]
-        }
-
-        return [
-            "text": text,
-            "blocks": blocksParsed,
-            "imageWidth": image.size.width,
-            "imageHeight": image.size.height
-        ]
-    }
-}
 
 extension Barcode {
     func toJSON(with image: UIImage) -> [AnyHashable: Any] {
@@ -148,16 +112,6 @@ extension Barcode {
             ]
         }
         return response
-    }
-}
-
-extension ImageLabel {
-    func toJSON() -> [String: Any] {
-        return [
-            "text": text,
-            "index": index,
-            "confidence": confidence
-        ]
     }
 }
 

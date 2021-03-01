@@ -1,4 +1,5 @@
 import MLKitBarcodeScanning
+import MLKitVision
 import UIKit
 
 @objc(FirebaseVisionPlugin)
