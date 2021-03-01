@@ -43,51 +43,12 @@ public class FirebaseVisionPlugin extends CordovaPlugin {
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-        if (action.equals("onDeviceTextRecognizer")) {
-            String message = args.getString(0);
-            this.onDeviceTextRecognizer(message, callbackContext);
-            return true;
-        } else if (action.equals("barcodeDetector")) {
+        if (action.equals("barcodeDetector")) {
             String message = args.getString(0);
             this.barcodeDetector(message, callbackContext);
             return true;
-        } else if (action.equals("imageLabeler")) {
-            String message = args.getString(0);
-            this.imageLabeler(message, callbackContext);
-            return true;
         }
         return false;
-    }
-
-    private void onDeviceTextRecognizer(String message, CallbackContext callbackContext) {
-        if (message != null && message.length() > 0) {
-            try {
-                InputImage image = getImage(message);
-                TextRecognizer recognizer = TextRecognition.getClient();
-                recognizer.process(image)
-                        .addOnSuccessListener(new OnSuccessListener<Text>() {
-                            @Override
-                            public void onSuccess(Text firebaseVisionText) {
-                                try {
-                                    JSONObject text = FirebaseUtils.parseText(image, firebaseVisionText);
-                                    callbackContext.success(text);
-                                } catch (Exception e) {
-                                    callbackContext.error(e.getLocalizedMessage());
-                                }
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                callbackContext.error(e.getLocalizedMessage());
-                            }
-                        });
-            } catch (Exception e) {
-                callbackContext.error(e.getLocalizedMessage());
-            }
-        } else {
-            callbackContext.error("Expected one non-empty string argument.");
-        }
     }
 
     private void barcodeDetector(String message, CallbackContext callbackContext) {
@@ -102,37 +63,6 @@ public class FirebaseVisionPlugin extends CordovaPlugin {
                                 try {
                                     JSONArray barcodes = FirebaseUtils.parseBarcodes(image, firebaseVisionBarcodes);
                                     callbackContext.success(barcodes);
-                                } catch (Exception e) {
-                                    callbackContext.error(e.getLocalizedMessage());
-                                }
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                callbackContext.error(e.getLocalizedMessage());
-                            }
-                        });
-            } catch (Exception e) {
-                callbackContext.error(e.getLocalizedMessage());
-            }
-        } else {
-            callbackContext.error("Expected one non-empty string argument.");
-        }
-    }
-
-    private void imageLabeler(String message, CallbackContext callbackContext) {
-        if (message != null && message.length() > 0) {
-            try {
-                InputImage image = getImage(message);
-                ImageLabeler detector = ImageLabeling.getClient(ImageLabelerOptions.DEFAULT_OPTIONS);
-                detector.process(image)
-                        .addOnSuccessListener(new OnSuccessListener<List<ImageLabel>>() {
-                            @Override
-                            public void onSuccess(List<ImageLabel> imageLabels) {
-                                try {
-                                    JSONArray imageLabels1 = FirebaseUtils.parseImageLabels(imageLabels);
-                                    callbackContext.success(imageLabels1);
                                 } catch (Exception e) {
                                     callbackContext.error(e.getLocalizedMessage());
                                 }
