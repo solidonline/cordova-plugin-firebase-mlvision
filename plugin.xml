@@ -23,6 +23,8 @@
                 <source url="https://cdn.cocoapods.org/"/>
             </config>
             <pods>
+                <pod name="MLKitCommon"/>
+                <pod name="GoogleMLKit/MLKitCore"/>
                 <pod name="GoogleMLKit/BarcodeScanning"/>
             </pods>
         </podspec>
