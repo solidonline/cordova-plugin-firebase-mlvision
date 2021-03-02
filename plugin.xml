@@ -23,7 +23,7 @@
                 <source url="https://cdn.cocoapods.org/"/>
             </config>
             <pods>
-                <pod name="GoogleMLKit/BarcodeScanning" spec="~> 0.64.1"/>
+                <pod name="GoogleMLKit/BarcodeScanning"/>
             </pods>
         </podspec>
     </platform>
