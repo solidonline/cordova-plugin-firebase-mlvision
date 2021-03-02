@@ -1,9 +1,9 @@
 {
-  "name": "cordova-plugin-firebase-aaamlvision",
+  "name": "zcordova-plugin-firebase-mlvision",
   "version": "0.5.3",
   "description": "",
   "cordova": {
-    "id": "cordova-plugin-firebase-aaamlvision",
+    "id": "zcordova-plugin-firebase-mlvision",
     "platforms": [
       "ios",
       "android"
