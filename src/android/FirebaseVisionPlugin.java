@@ -67,13 +67,7 @@ public class FirebaseVisionPlugin extends CordovaPlugin {
                                         .build();
                 BarcodeScanner detector = BarcodeScanning.getClient(options);
 
-                InputImage image = InputImage.fromByteArray(
-                         base64data,
-                         bitMap.getWidth(),
-                         bitMap.getHeight(),
-                         0,
-                         InputImage.IMAGE_FORMAT_NV21 // or IMAGE_FORMAT_YV12
-                );
+                InputImage image = InputImage.fromBitmap(bitMap, 0);
 
                 detector.process(image)
                         .addOnSuccessListener(new OnSuccessListener<List<Barcode>>() {
