@@ -56,7 +56,7 @@ public class FirebaseVisionPlugin extends CordovaPlugin {
         if (message != null && message.length() > 0) {
             try {
                 //InputImage image = getImage(message);
-                byte[] base64data = base64toByte(message);
+                byte[] base64data = base64toByte(message, callbackContext);
                 Bitmap bitMap = BitmapFactory.decodeByteArray(base64data, 0, base64data.length);
                 BarcodeScannerOptions options =
                                         new BarcodeScannerOptions.Builder()
@@ -117,7 +117,7 @@ public class FirebaseVisionPlugin extends CordovaPlugin {
         }
     }
 
-    private byte[] base64toByte(String message) throws IOException {
+    private byte[] base64toByte(String message, CallbackContext callbackContext) throws IOException {
         byte[] decodedString;
         if (message.contains("data:")) {
             message = message.replace("data:image/png;base64,", "").replace("data:image/jpeg;base64,", "");
