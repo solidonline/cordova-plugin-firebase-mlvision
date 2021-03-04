@@ -12,6 +12,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.mlkit.vision.barcode.Barcode;
 import com.google.mlkit.vision.barcode.BarcodeScanner;
 import com.google.mlkit.vision.barcode.BarcodeScanning;
+import com.google.mlkit.vision.barcode.BarcodeScannerOptions;
 import com.google.mlkit.vision.common.InputImage;
 
 
@@ -55,7 +56,14 @@ public class FirebaseVisionPlugin extends CordovaPlugin {
         if (message != null && message.length() > 0) {
             try {
                 InputImage image = getImage(message);
-                BarcodeScanner detector = BarcodeScanning.getClient();
+                BarcodeScannerOptions options =
+                                        new BarcodeScannerOptions.Builder()
+                                        .setBarcodeFormats(
+                                                Barcode.FORMAT_QR_CODE,
+                                                Barcode.FORMAT_AZTEC
+                                        )
+                                        .build();
+                BarcodeScanner detector = BarcodeScanning.getClient(options);
                 detector.process(image)
                         .addOnSuccessListener(new OnSuccessListener<List<Barcode>>() {
                             @Override
