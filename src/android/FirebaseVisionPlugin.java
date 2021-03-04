@@ -116,12 +116,15 @@ public class FirebaseVisionPlugin extends CordovaPlugin {
             return image;
         }
     }
+
     private byte[] base64toByte(String message) throws IOException {
-       if (message.contains("data:")) {
-           message = message
-                   .replace("data:image/png;base64,", "")
-                   .replace("data:image/jpeg;base64,", "");
-           byte[] decodedString = Base64.decode(message, Base64.DEFAULT);
-           return decodedString;
-       }
+        byte[] decodedString;
+        if (message.contains("data:")) {
+            message = message.replace("data:image/png;base64,", "").replace("data:image/jpeg;base64,", "");
+        } else {
+            callbackContext.error("Expected one non-empty string argument.");
+        }
+        decodedString = Base64.decode(message, Base64.DEFAULT);
+        return decodedString;
+    }
 }
