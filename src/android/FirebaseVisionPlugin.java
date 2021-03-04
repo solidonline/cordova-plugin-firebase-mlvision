@@ -55,7 +55,9 @@ public class FirebaseVisionPlugin extends CordovaPlugin {
     private void barcodeDetector(String message, CallbackContext callbackContext) {
         if (message != null && message.length() > 0) {
             try {
-                InputImage image = getImage(message);
+                //InputImage image = getImage(message);
+                byte[] base64data = base64toByte(message);
+                Bitmap bitMap = BitmapFactory.decodeByteArray(base64data, 0, base64data.length);
                 BarcodeScannerOptions options =
                                         new BarcodeScannerOptions.Builder()
                                         .setBarcodeFormats(
@@ -64,6 +66,15 @@ public class FirebaseVisionPlugin extends CordovaPlugin {
                                         )
                                         .build();
                 BarcodeScanner detector = BarcodeScanning.getClient(options);
+
+                InputImage image = InputImage.fromByteArray(
+                         base64data,
+                         bitMap.getWidth(),
+                         bitMap.getHeight(),
+                         0,
+                         InputImage.IMAGE_FORMAT_NV21 // or IMAGE_FORMAT_YV12
+                );
+
                 detector.process(image)
                         .addOnSuccessListener(new OnSuccessListener<List<Barcode>>() {
                             @Override
@@ -105,4 +116,12 @@ public class FirebaseVisionPlugin extends CordovaPlugin {
             return image;
         }
     }
+    private byte[] base64toByte(String message) throws IOException {
+       if (message.contains("data:")) {
+           message = message
+                   .replace("data:image/png;base64,", "")
+                   .replace("data:image/jpeg;base64,", "");
+           byte[] decodedString = Base64.decode(message, Base64.DEFAULT);
+           return decodedString;
+       }
 }
