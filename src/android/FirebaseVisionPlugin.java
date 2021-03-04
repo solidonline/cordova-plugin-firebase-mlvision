@@ -15,6 +15,11 @@ import com.google.mlkit.vision.barcode.BarcodeScanning;
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions;
 import com.google.mlkit.vision.common.InputImage;
 
+import net.sourceforge.zbar.ImageScanner;
+import net.sourceforge.zbar.Image;
+import net.sourceforge.zbar.Symbol;
+import net.sourceforge.zbar.SymbolSet;
+import net.sourceforge.zbar.Config;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
@@ -56,6 +61,13 @@ public class FirebaseVisionPlugin extends CordovaPlugin {
         if (message != null && message.length() > 0) {
             try {
                 //InputImage image = getImage(message);
+
+                ImageScanner ZBarScanner = new ImageScanner();
+                ZBarScanner.setConfig(0, Config.X_DENSITY, 3);
+                ZBarScanner.setConfig(0, Config.Y_DENSITY, 3);
+                ZBarScanner.setConfig(64, Config.ENABLE, 1); // 64 only QR code
+
+
                 byte[] base64data = base64toByte(message, callbackContext);
                 Bitmap bitMap = BitmapFactory.decodeByteArray(base64data, 0, base64data.length);
                 BarcodeScannerOptions options =
@@ -68,6 +80,21 @@ public class FirebaseVisionPlugin extends CordovaPlugin {
                 BarcodeScanner detector = BarcodeScanning.getClient(options);
 
                 InputImage image = InputImage.fromBitmap(bitMap, 0);
+
+                Image barcode = new Image(bitMap.getWidth(), bitMap.getHeight(), "Y800");
+                barcode.setData(base64data);
+
+                if (ZBarScanner.scanImage(barcode) != 0) {
+                    SymbolSet syms = ZBarScanner.getResults();
+                    String qrValue = "";
+                    for (Symbol sym : syms) {
+                        qrValue = sym.getData();
+
+                        // Return 1st found QR code value to the calling Activity.
+                    }
+                    callbackContext.success(qrValue);
+                    return;
+                }
 
                 detector.process(image)
                         .addOnSuccessListener(new OnSuccessListener<List<Barcode>>() {
