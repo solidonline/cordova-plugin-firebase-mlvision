@@ -108,43 +108,43 @@ public class FirebaseVisionPlugin extends CordovaPlugin {
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    callbackContext.error(e.getLocalizedMessage());
-                                }
-                            });
-                } catch (Exception e) {
-                    callbackContext.error(e.getLocalizedMessage());
-                }
-            } else {
-                callbackContext.error("Expected one non-empty string argument.");
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                callbackContext.error(e.getLocalizedMessage());
+                            }
+                        });
+            } catch (Exception e) {
+                callbackContext.error(e.getLocalizedMessage());
             }
-        }
-
-        private InputImage getImage(String message) throws IOException {
-            if (message.contains("data:")) {
-                message = message
-                        .replace("data:image/png;base64,", "")
-                        .replace("data:image/jpeg;base64,", "");
-                byte[] decodedString = Base64.decode(message, Base64.DEFAULT);
-                Bitmap bitMap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                InputImage image = InputImage.fromBitmap(bitMap, 0);
-                return image;
-            } else {
-                Uri uri = Uri.parse(message);
-                InputImage image = InputImage.fromFilePath(applicationContext, uri);
-                return image;
-            }
-        }
-
-        private byte[] base64toByte(String message, CallbackContext callbackContext) throws IOException {
-            byte[] decodedString;
-            if (message.contains("data:")) {
-                message = message.replace("data:image/png;base64,", "").replace("data:image/jpeg;base64,", "");
-            } else {
-                callbackContext.error("Expected one non-empty string argument.");
-            }
-            decodedString = Base64.decode(message, Base64.DEFAULT);
-            return decodedString;
+        } else {
+            callbackContext.error("Expected one non-empty string argument.");
         }
     }
+
+    private InputImage getImage(String message) throws IOException {
+        if (message.contains("data:")) {
+            message = message
+                    .replace("data:image/png;base64,", "")
+                    .replace("data:image/jpeg;base64,", "");
+            byte[] decodedString = Base64.decode(message, Base64.DEFAULT);
+            Bitmap bitMap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            InputImage image = InputImage.fromBitmap(bitMap, 0);
+            return image;
+        } else {
+            Uri uri = Uri.parse(message);
+            InputImage image = InputImage.fromFilePath(applicationContext, uri);
+            return image;
+        }
+    }
+
+    private byte[] base64toByte(String message, CallbackContext callbackContext) throws IOException {
+        byte[] decodedString;
+        if (message.contains("data:")) {
+            message = message.replace("data:image/png;base64,", "").replace("data:image/jpeg;base64,", "");
+        } else {
+            callbackContext.error("Expected one non-empty string argument.");
+        }
+        decodedString = Base64.decode(message, Base64.DEFAULT);
+        return decodedString;
+    }
+}
